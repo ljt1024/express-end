@@ -10,6 +10,7 @@ const jwt = require('jsonwebtoken')
 const SECRET = 'token_secret'
 
 app.post('/api/register',urlencodedParser, async (req, res) => {
+    console.log(req.body.username);
     const isUserHas = await User.findOne({
         username: req.body.username
     })
@@ -21,7 +22,10 @@ app.post('/api/register',urlencodedParser, async (req, res) => {
     const user = await User.create({
         username: req.body.username,
         password: req.body.password
+    },error => {
+        console.log(error,'error');
     })
+    console.log(user);
     res.send(user)
 })
 

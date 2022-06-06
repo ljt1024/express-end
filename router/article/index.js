@@ -3,8 +3,9 @@ const express = require('express')
 const bodyParser = require('body-parser');
 const urlencodedParser = bodyParser.urlencoded({extended: false});
 const jsonParser = bodyParser.json();
-const articleRouter = express.Router();
+const articleRouter = new express.Router();
 const { Article } = require('../../model/index')
+
 articleRouter.get('/api/articleList',jsonParser, async (req, res) => {
     let query = {}
     if(req.query.title) {
@@ -30,7 +31,7 @@ articleRouter.get('/api/articleList',jsonParser, async (req, res) => {
 })
 
 articleRouter.post('/api/addArticle',urlencodedParser, async (req, res) => {
-    const isTitHas = await Article.findOne({
+    var isTitHas = await Article.findOne({
         title: req.body.title
     })
     if (isTitHas) {
@@ -39,12 +40,25 @@ articleRouter.post('/api/addArticle',urlencodedParser, async (req, res) => {
             msg: '标题重复'
         })
     }
-    const article = await Article.create({
+    console.log(req.body.title);
+    Article.create({
         title: req.body.title,
         content: req.body.content,
         abstract: req.body.abstract,
         creatTime: new Date().toLocaleString()
-    })
+    }, (err, value)=>{
+         if(err) {
+             console.log(err);
+         }
+         console.log(value);
+     })
+    // const articles = await Article.create({
+    //     title: req.body.title,
+    //     content: req.body.content,
+    //     abstract: req.body.abstract,
+    //     creatTime: new Date().toLocaleString()
+    // })
+    // console.log(articles);
     res.send({
         code: 200,
         msg: '添加成功'

@@ -29,8 +29,21 @@ const ArticleSchema = {
     thumbs: {
         type: String
     },
+    // 分类标签
     category: {
         type: String
+    },
+    // 文章图片
+    img: {
+        type: String
+    },
+    // 是否发布
+    ispublish: {
+        type: Boolean
+    },
+    // 是否推荐
+    isrecommend: {
+        type: Boolean
     }
 }
 
