@@ -40,25 +40,12 @@ articleRouter.post('/api/addArticle',urlencodedParser, async (req, res) => {
             msg: '标题重复'
         })
     }
-    console.log(req.body.title);
-    Article.create({
+    const articles = await Article.create({
         title: req.body.title,
         content: req.body.content,
         abstract: req.body.abstract,
         creatTime: new Date().toLocaleString()
-    }, (err, value)=>{
-         if(err) {
-             console.log(err);
-         }
-         console.log(value);
-     })
-    // const articles = await Article.create({
-    //     title: req.body.title,
-    //     content: req.body.content,
-    //     abstract: req.body.abstract,
-    //     creatTime: new Date().toLocaleString()
-    // })
-    // console.log(articles);
+    })
     res.send({
         code: 200,
         msg: '添加成功'
