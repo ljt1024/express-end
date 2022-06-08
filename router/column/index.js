@@ -8,10 +8,11 @@ const { Column } = require('../../model/index')
 
 columnRouter.get('/api/columnList',jsonParser, async (req, res) => {
     let query = {}
-    if(req.query.title) {
-        query.title = req.query.title
+    console.log(req.query);
+    if(req.query.columnName) {
+        query.columnName= req.query.columnName
     }
-    var list = Column.find(query)
+    var list = await Column.find(query)
     res.send({
         code: 200,
         total: list.length,
@@ -21,7 +22,7 @@ columnRouter.get('/api/columnList',jsonParser, async (req, res) => {
 
 columnRouter.post('/api/addColumn',urlencodedParser, async (req, res) => {
     var isNameHas = await Column.findOne({
-        name: req.body.name
+        columnName: req.body.columnName
     })
     if (isNameHas) {
         return res.status(200).send({
@@ -30,7 +31,7 @@ columnRouter.post('/api/addColumn',urlencodedParser, async (req, res) => {
         })
     }
      await Column.create({
-        name: req.body.name
+         columnName: req.body.columnName
     })
     res.send({
         code: 200,
