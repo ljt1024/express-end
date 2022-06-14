@@ -3,15 +3,15 @@ const bodyParser = require('body-parser');
 const urlencodedParser = bodyParser.urlencoded({extended: false});
 const jsonParser = bodyParser.json();
 const app = express.Router();
-const { User } = require('../../model/index')
+const { Admin } = require('../../model/index')
 // 引入 jwt
 const jwt = require('jsonwebtoken')
 // 解析 token 用的密钥
 const SECRET = 'token_secret'
 
-app.post('/api/register',urlencodedParser, async (req, res) => {
+app.post('/api/admin/register',urlencodedParser, async (req, res) => {
     console.log(req.body.username);
-    const isUserHas = await User.findOne({
+    const isUserHas = await Admin.findOne({
         username: req.body.username
     })
     if (isUserHas) {
@@ -19,7 +19,7 @@ app.post('/api/register',urlencodedParser, async (req, res) => {
             msg: '用户名重复'
         })
     }
-    const user = await User.create({
+    const user = await Admin.create({
         username: req.body.username,
         password: req.body.password
     })
@@ -27,13 +27,13 @@ app.post('/api/register',urlencodedParser, async (req, res) => {
 })
 
 
-app.post('/api/login',urlencodedParser, async (req, res) => {
+app.post('/api/admin/login',urlencodedParser, async (req, res) => {
     console.log(req.body);
-    const user = await User.findOne({
+    const user = await Admin.findOne({
         username: req.body.username
     })
 
-    if (!user) {
+    if (!Admin) {
         return res.status(200).send({
             msg: '用户名不存在'
         })
@@ -58,11 +58,11 @@ app.post('/api/login',urlencodedParser, async (req, res) => {
     })
 })
 
-app.get('/api/profile', async (req, res) => {
+app.get('/api/admin/profile', async (req, res) => {
     const raw = String(req.headers.authorization.split(' ').pop())
     // 解密 token 获取对应的 id
     const { id } = jwt.verify(raw, SECRET)
-    req.user = await User.findById(id)
+    req.user = await Admin.findById(id)
     res.send({
         code: 200,
         data: {

@@ -9,7 +9,7 @@ const jwt = require('jsonwebtoken')
 // 解析 token 用的密钥
 const SECRET = 'token_secret'
 
-app.post('/api/register',urlencodedParser, async (req, res) => {
+app.post('/api/user/register',urlencodedParser, async (req, res) => {
     console.log(req.body.username);
     const isUserHas = await User.findOne({
         username: req.body.username
@@ -27,7 +27,7 @@ app.post('/api/register',urlencodedParser, async (req, res) => {
 })
 
 
-app.post('/api/login',urlencodedParser, async (req, res) => {
+app.post('/api/user/login',urlencodedParser, async (req, res) => {
     console.log(req.body);
     const user = await User.findOne({
         username: req.body.username
@@ -58,7 +58,7 @@ app.post('/api/login',urlencodedParser, async (req, res) => {
     })
 })
 
-app.get('/api/profile', async (req, res) => {
+app.get('/api/user/profile', async (req, res) => {
     const raw = String(req.headers.authorization.split(' ').pop())
     // 解密 token 获取对应的 id
     const { id } = jwt.verify(raw, SECRET)

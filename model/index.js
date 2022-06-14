@@ -1,6 +1,7 @@
 // 引入 mongoose
 const mongoose = require('mongoose')
-const UserOption = require('./login')
+const UserOption = require('./user')
+const AdminOption = require('./admin')
 const ArticleOption = require('./article')
 const ColumnOption = require('./column')
 
@@ -15,6 +16,8 @@ mongoose.connect('mongodb://localhost:27017/ExpressAuth', {
 
 // 建立用户表
 const UserSchema = new mongoose.Schema(UserOption.UserSchema)
+// 建立管理员表
+const AdminSchema = new mongoose.Schema(AdminOption.AdminSchema)
 // 建立文章表
 const ArticleSchema = new mongoose.Schema(ArticleOption.ArticleSchema)
 // 建立栏目表
@@ -22,7 +25,8 @@ const ColumnSchema = new mongoose.Schema(ColumnOption.ColumnSchema)
 
 // 建立数据库模型
 const User = mongoose.model('User', UserSchema)
+const Admin = mongoose.model('Admin', AdminSchema )
 const Article = mongoose.model('Article', ArticleSchema)
 const Column = mongoose.model('Column', ColumnSchema)
 
-module.exports = { User, Article, Column }
+module.exports = { User, Article, Column, Admin }

@@ -1,9 +1,10 @@
 const express = require('express')
 const articleRouter = require('./article/index')
-const LoginRouter = require('./login/index')
+const UserRouter = require('./user/index')
+const AdminRouter = require('./admin/index')
 const columnRouter = require('./column/index')
 const app = express()
 
-app.use([articleRouter, LoginRouter, columnRouter])
+app.use([articleRouter, UserRouter, columnRouter, AdminRouter])
 
 module.exports = app
