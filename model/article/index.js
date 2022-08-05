@@ -1,9 +1,14 @@
 // 建立文章表
 const ArticleSchema = {
-    // 文章标题 
+    id: {
+        type: String,
+        default: new Date().getTime(),
+    },
+    // 文章标题
     title: {
         type: String,
-        unique: true
+        sparse: true,
+        required: true
     },
     // 文章描述
     abstract: {
@@ -29,6 +34,10 @@ const ArticleSchema = {
     thumbs: {
         type: String
     },
+    // 阅读数
+    readNum: {
+        type: String
+    },
     // 分类标签
     category: {
         type: String
@@ -44,7 +53,7 @@ const ArticleSchema = {
     // 是否推荐
     isrecommend: {
         type: Boolean
-    }
+    },
 }
 
 module.exports = { ArticleSchema }
