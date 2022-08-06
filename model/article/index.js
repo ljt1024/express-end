@@ -1,8 +1,7 @@
 // 建立文章表
 const ArticleSchema = {
     id: {
-        type: String,
-        default: new Date().getTime(),
+        type: String
     },
     // 文章标题
     title: {
