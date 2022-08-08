@@ -15,7 +15,8 @@ app.post('/api/user/register',urlencodedParser, async (req, res) => {
         username: req.body.username
     })
     if (isUserHas) {
-        return res.status(422).send({
+        return res.status(200).send({
+            code: 201,
             msg: '用户名重复'
         })
     }
@@ -35,13 +36,15 @@ app.post('/api/user/login',urlencodedParser, async (req, res) => {
 
     if (!user) {
         return res.status(200).send({
+            code: 201,
             msg: '用户名不存在'
         })
     }
 
     if(user.password !== req.body.password) {
         return res.status(200).send({
-            msg: '密码无效'
+            code: 201,
+            msg: '账号或密码错误'
         })
     }
     /*
@@ -66,7 +69,11 @@ app.get('/api/user/profile', async (req, res) => {
     res.send({
         code: 200,
         data: {
-            user: req.user
+            user: {
+                username: req.user.username,
+                id: req.user._id,
+                avatar: req.user.avatar|| ''
+            }
         }
     })
 })

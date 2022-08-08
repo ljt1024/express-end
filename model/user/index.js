@@ -9,6 +9,9 @@ const UserSchema = {
         type: String,
         unique: true
     },
+    avatar: {
+        type: String
+    },
     password: {
         type: String,
         set: (val) => {
