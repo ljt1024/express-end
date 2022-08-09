@@ -51,7 +51,11 @@ app.post('/api/user/login',urlencodedParser, async (req, res) => {
       生成 token
       jwt.sign() 接受两个参数，一个是传入的对象，一个是自定义的密钥
     */
-    const token = jwt.sign({ id: String(user._id) }, SECRET)
+    const token = jwt.sign(
+        { id: String(user._id) },
+                SECRET,
+        { expiresIn:  60 * 60 * 24 * 3 }// 以s作为单位（目前设置的过期时间为3天）
+        )
     res.send({
         code: 200,
         data:{
@@ -64,7 +68,15 @@ app.post('/api/user/login',urlencodedParser, async (req, res) => {
 app.get('/api/user/profile', async (req, res) => {
     const raw = String(req.headers.authorization.split(' ').pop())
     // 解密 token 获取对应的 id
-    const { id } = jwt.verify(raw, SECRET)
+    try {
+        var { id } = jwt.verify(raw, SECRET)
+    } catch (e) {
+        res.send({
+            code: 205,
+            msg: 'token失效，请重新登录'
+        })
+        return
+    }
     req.user = await User.findById(id)
     res.send({
         code: 200,
