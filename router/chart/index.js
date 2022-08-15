@@ -24,4 +24,12 @@ chartRouter.post('/api/chartSend',urlencodedParser, async (req, res) => {
     })
 })
 
+chartRouter.post('/api/deleteAllChart',urlencodedParser, async (req, res) => {
+    await Chart.remove({})
+    res.send({
+        code: 200,
+        msg: '删除成功'
+    })
+})
+
 module.exports  = chartRouter

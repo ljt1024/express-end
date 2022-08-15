@@ -4,7 +4,7 @@ const UserOption = require('./user')
 const AdminOption = require('./admin')
 const ArticleOption = require('./article')
 const ColumnOption = require('./column')
-const ChartOption = require('./Chart')
+const ChartOption = require('./chart')
 
 // 连接数据库，自动新建 ExpressAuth 库
 mongoose.connect('mongodb://localhost:27017/ExpressAuth', {
