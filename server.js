@@ -67,7 +67,7 @@ app.use((err, req, res, next)=> {
 // 开启服务，监听端口
 
 app.listen(3002, () => {
-  console.log('http://localhost:3002')
+  console.log('http://localhost:3003')
 })
 
 module.exports = app;

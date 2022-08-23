@@ -15,8 +15,9 @@ app.post('/api/admin/register',urlencodedParser, async (req, res) => {
         username: req.body.username
     })
     if (isUserHas) {
-        return res.status(422).send({
-            msg: '用户名重复'
+        return res.status(200).send({
+            msg: '用户名重复',
+            code: 201
         })
     }
     const user = await Admin.create({
@@ -33,15 +34,17 @@ app.post('/api/admin/login',urlencodedParser, async (req, res) => {
         username: req.body.username
     })
 
-    if (!Admin) {
+    if (!user) {
         return res.status(200).send({
-            msg: '用户名不存在'
+            msg: '用户名不存在',
+            code: 201
         })
     }
 
     if(user.password !== req.body.password) {
         return res.status(200).send({
-            msg: '密码无效'
+            msg: '密码无效',
+            code: 201
         })
     }
     /*
