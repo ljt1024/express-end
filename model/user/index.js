@@ -12,6 +12,9 @@ const UserSchema = {
     avatar: {
         type: String
     },
+    creatDate: {
+
+    },
     password: {
         type: String,
         set: (val) => {

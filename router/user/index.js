@@ -28,6 +28,32 @@ app.post('/api/user/register',urlencodedParser, async (req, res) => {
     res.send(user)
 })
 
+app.get('/api/userList',jsonParser, async (req, res) => {
+    let query = {}
+    if(req.query.username) {
+        query.username = req.query.username
+    }
+    // if(req.query.id) {
+    //     query.id = req.query.id
+    // }
+    var list = User.find(query)
+    const page = req.query.page/1 || 1
+    const rows =  req.query.rows/1 || 10
+    list.skip((page - 1) * rows);
+    list.limit(rows);
+    list.exec(async (err, rs)=> {
+        if(err) {
+            res.send(err)
+        } else {
+            let all = await User.find(query)
+            res.send({
+                code: 200,
+                total: all.length,
+                data: rs
+            })
+        }
+    })
+})
 
 app.post('/api/user/login',urlencodedParser, async (req, res) => {
     console.log(req.body);
