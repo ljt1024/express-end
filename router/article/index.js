@@ -50,7 +50,7 @@ articleRouter.post('/api/addArticle',urlencodedParser, async (req, res) => {
         })
     }
     try {
-        const articles = await Article.create({id:new Date().getTime(),...req.body})
+        const articles = await Article.create({id:new Date().getTime(),creatTime: new Date().getTime(),...req.body})
     } catch (e) {
         console.log(e);
         return res.send({

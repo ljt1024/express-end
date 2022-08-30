@@ -23,7 +23,8 @@ app.post('/api/user/register',urlencodedParser, async (req, res) => {
     const user = await User.create({
         username: req.body.username,
         password: req.body.password,
-        avatar: req.body.avatar || ''
+        avatar: req.body.avatar || '',
+        creatDate: new Date().toString()
     })
     res.send(user)
 })

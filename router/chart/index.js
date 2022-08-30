@@ -6,6 +6,7 @@ const jsonParser = bodyParser.json();
 const chartRouter = new express.Router();
 const { Chart } = require('../../model/index')
 
+//分页
 chartRouter.get('/api/chartList',jsonParser, async (req, res) => {
     let query = {}
     var list = await Chart.find({})

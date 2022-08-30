@@ -27,7 +27,32 @@ app.post('/api/admin/register',urlencodedParser, async (req, res) => {
     res.send(user)
 })
 
-
+app.get('/api/admin/adminList',jsonParser, async (req, res) => {
+    let query = {}
+    if(req.query.username) {
+        query.username = req.query.username
+    }
+    // if(req.query.id) {
+    //     query.id = req.query.id
+    // }
+    var list = Admin.find(query)
+    const page = req.query.page/1 || 1
+    const rows =  req.query.rows/1 || 10
+    list.skip((page - 1) * rows);
+    list.limit(rows);
+    list.exec(async (err, rs)=> {
+        if(err) {
+            res.send(err)
+        } else {
+            let all = await Admin.find(query)
+            res.send({
+                code: 200,
+                total: all.length,
+                data: rs
+            })
+        }
+    })
+})
 app.post('/api/admin/login',urlencodedParser, async (req, res) => {
     console.log(req.body);
     const user = await Admin.findOne({

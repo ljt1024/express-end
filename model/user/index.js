@@ -13,7 +13,7 @@ const UserSchema = {
         type: String
     },
     creatDate: {
-
+        type: String
     },
     password: {
         type: String,
