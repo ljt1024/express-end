@@ -11,7 +11,7 @@ commentRouter.get('/api/commentList',jsonParser, async (req, res) => {
     if(req.query.id) {
         query.articleId= req.query.id
     }
-    var list = await Comment.find(query).sort({createTime: -1})
+    const list = await Comment.find(query).sort({createTime: -1})
     res.send({
         code: 200,
         total: list.length,
@@ -20,7 +20,6 @@ commentRouter.get('/api/commentList',jsonParser, async (req, res) => {
 })
 
 commentRouter.post('/api/sendComment',urlencodedParser, async (req, res) => {
-    console.log(req);
     await Comment.create({...req.body, createTime: new Date().getTime()})
     res.send({
         code: 200,
@@ -54,6 +53,24 @@ commentRouter.post('/api/updateColumne',urlencodedParser, async (req, res) => {
     const result = await Comment.updateOne({
         _id: req.body.id
     },req.body)
+    res.send({
+        code: 200,
+        msg: '更新成功'
+    })
+})
+
+// 点赞取消点赞
+commentRouter.post('/api/updateLike',urlencodedParser, async (req, res) => {
+    const value = await Comment.findOne({ _id: req.body.id})
+    value.isLike = !value.isLike
+    if (value.isLike) {
+        value.thumbs++
+    } else if (value.thumbs > 0){
+        value.thumbs--
+    }
+    const result = await Comment.updateOne({
+        _id: req.body.id
+    },{isLike: value.isLike, thumbs: value.thumbs})
     res.send({
         code: 200,
         msg: '更新成功'

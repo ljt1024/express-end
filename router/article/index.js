@@ -14,6 +14,9 @@ articleRouter.get('/api/articleList',jsonParser, async (req, res) => {
     if(req.query.id) {
         query.id = req.query.id
     }
+    if(req.query.category) {
+        query.category= req.query.category
+    }
     var list = Article.find(query)
     const page = req.query.page/1 || 1
     const rows =  req.query.rows/1 || 10
@@ -50,7 +53,7 @@ articleRouter.post('/api/addArticle',urlencodedParser, async (req, res) => {
         })
     }
     try {
-        const articles = await Article.create({id:new Date().getTime(),creatTime: new Date().getTime(),...req.body})
+        const articles = await Article.create({id:new Date().getTime(),createTime: new Date().getTime(),...req.body})
     } catch (e) {
         console.log(e);
         return res.send({

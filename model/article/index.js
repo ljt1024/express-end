@@ -18,7 +18,7 @@ const ArticleSchema = {
         type: String
     },
     // 文章创建时间
-    creatTime: {
+    createTime: {
         type: String
     },
     // 作者

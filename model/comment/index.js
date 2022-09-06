@@ -19,6 +19,16 @@ const CommentSchema = {
     // 评论时间
     createTime: {
         type: String
+    },
+    // 点赞数
+    thumbs: {
+        type: Number,
+        default: 0
+    },
+    // 是否点赞
+    isLike: {
+        type: Boolean,
+        default: false
     }
 }
 
