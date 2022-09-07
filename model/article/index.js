@@ -27,7 +27,7 @@ const ArticleSchema = {
     },
     // 评论数
     comments: {
-        type: String
+        type: Number
     },
     // 点赞数
     thumbs: {

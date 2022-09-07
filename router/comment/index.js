@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const urlencodedParser = bodyParser.urlencoded({extended: false});
 const jsonParser = bodyParser.json();
 const commentRouter = new express.Router();
-const { Comment } = require('../../model/index')
+const { Comment, Article } = require('../../model/index')
 
 commentRouter.get('/api/commentList',jsonParser, async (req, res) => {
     let query = {}
@@ -21,6 +21,8 @@ commentRouter.get('/api/commentList',jsonParser, async (req, res) => {
 
 commentRouter.post('/api/sendComment',urlencodedParser, async (req, res) => {
     await Comment.create({...req.body, createTime: new Date().getTime()})
+    const list = await Comment.find({articleId: req.body.articleId})
+    await Article.updateOne({id: req.body.articleId},{comments:list.length})
     res.send({
         code: 200,
         msg: '评论成功'
