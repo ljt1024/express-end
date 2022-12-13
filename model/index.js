@@ -6,6 +6,7 @@ const ArticleOption = require('./article')
 const ColumnOption = require('./column')
 const ChartOption = require('./chart')
 const CommentOption = require('./comment')
+const ThumbOption = require('./thumb')
 
 // 连接数据库，自动新建 ExpressAuth 库
 mongoose.connect('mongodb://localhost:27017/ExpressAuth', {
@@ -28,6 +29,10 @@ const ColumnSchema = new mongoose.Schema(ColumnOption.ColumnSchema)
 const ChartSchema = new mongoose.Schema(ChartOption.ChartSchema)
 // 建立评论表
 const CommentSchema = new mongoose.Schema(CommentOption.CommentSchema)
+// 建立点赞表
+const ThumbSchema = new mongoose.Schema(ThumbOption.ThumbSchema)
+
+
 // 建立数据库模型
 const User = mongoose.model('User', UserSchema)
 const Admin = mongoose.model('Admin', AdminSchema )
@@ -35,5 +40,6 @@ const Article = mongoose.model('Article', ArticleSchema)
 const Column = mongoose.model('Column', ColumnSchema)
 const Chart =  mongoose.model('Chart', ChartSchema)
 const Comment = mongoose.model('Comment', CommentSchema)
+const Thumb = mongoose.model('Thumb', ThumbSchema)
 
-module.exports = { User, Article, Column, Admin, Chart, Comment }
+module.exports = { User, Article, Column, Admin, Chart, Comment, Thumb }

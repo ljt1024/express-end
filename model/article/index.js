@@ -53,6 +53,11 @@ const ArticleSchema = {
     isrecommend: {
         type: Boolean
     },
+    // // 是否点赞
+    // isLike: {
+    //     type: Boolean,
+    //     default: false
+    // }
 }
 
 module.exports = { ArticleSchema }
