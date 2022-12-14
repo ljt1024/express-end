@@ -81,7 +81,12 @@ articleRouter.get('/api/detailArticle', jsonParser, async (req, res) => {
     })
     let isFlower = false
 
-    if (Array.isArray(thumbItem.userIds) && thumbItem.userIds.length > 0 &&  userId._id && thumbItem.userIds.includes(userId._id)) {
+    if ( thumbItem
+         && Array.isArray(thumbItem.userIds)
+         && thumbItem.userIds.length > 0
+         && userId._id
+         && thumbItem.userIds.includes(userId._id))
+    {
         isFlower = true
     } else {
         isFlower = false

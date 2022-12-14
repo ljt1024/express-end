@@ -94,6 +94,13 @@ app.post('/api/user/login',urlencodedParser, async (req, res) => {
 })
 
 app.get('/api/user/profile', async (req, res) => {
+    if (!req.headers.authorization) {
+        res.send({
+            code: 205,
+            msg: 'token失效，请重新登录'
+        })
+        return
+    }
     const raw = String(req.headers.authorization.split(' ').pop())
     // 解密 token 获取对应的 id
     try {

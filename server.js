@@ -6,6 +6,7 @@ const cors = require('cors')
 const expressWs = require('express-ws')
 const { Chart } = require('./model/index')
 
+
 // 创建服务器应用程序
 const app = express()
 expressWs(app)
