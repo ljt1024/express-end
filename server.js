@@ -10,8 +10,11 @@ const { Chart } = require('./model/index')
 // 创建服务器应用程序
 const app = express()
 expressWs(app)
+
+// 静态资源
 app.use(express.json())
 app.use(express.static(path.join(__dirname, 'public')));
+// 跨域
 app.use(cors())
 app.use(router)
 
@@ -62,12 +65,14 @@ function allSend(msg) {
     item.send(msg)
   })
 }
+
+// 全局捕获
 app.use((err, req, res, next)=> {
   console.error('Error:', err);
   res.status(500).send('Service Error');
 });
-// 开启服务，监听端口
 
+// 开启服务，监听端口
 app.listen(3002, () => {
   console.log('http://localhost:3003')
 })

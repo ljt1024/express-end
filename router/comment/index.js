@@ -4,20 +4,40 @@ const bodyParser = require('body-parser');
 const urlencodedParser = bodyParser.urlencoded({extended: false});
 const jsonParser = bodyParser.json();
 const commentRouter = new express.Router();
-const { Comment, Article } = require('../../model/index')
+const { Comment, Article, Thumb } = require('../../model/index')
+const validateToken = require('../../utils/index')
 
 commentRouter.get('/api/commentList',jsonParser, async (req, res) => {
     let query = {}
     if(req.query.id) {
-        query.articleId= req.query.id
+        query.articleId = req.query.id
     }
+    // 1:用户未登录, 2: 用户登录了，判断每个评论是否是自己点赞, 循环查询点赞表
     const list = await Comment.find(query).sort({createTime: -1})
+    if (req.query.userId) {
+        if (Array.isArray(list) && list.length > 1) {
+            for (let i = 0; i < list.length; i++) {
+               if (await isMyThumb(list[i]._id, req.query.userId)) {
+                   list[i].isLike = true
+               } else {
+                   list[i].isLike = false
+               }
+            }
+        }
+    }
     res.send({
         code: 200,
         total: list.length,
         data: list
     })
 })
+
+async function isMyThumb(commentId, userId) {
+ // 根据评论id查询点赞表用户ids, 判断用户id是否存在ids中，存在表示已经点赞，否则未点赞
+    let thumbItem = await Thumb.find({commentId})
+    let userIds = thumbItem.userIds
+    return Array.isArray(userIds) && userIds.includes(userId)
+}
 
 commentRouter.post('/api/sendComment',urlencodedParser, async (req, res) => {
     await Comment.create({...req.body, createTime: new Date().getTime()})
@@ -61,7 +81,7 @@ commentRouter.post('/api/updateColumne',urlencodedParser, async (req, res) => {
     })
 })
 
-// 点赞取消点赞
+// 点赞取消点赞 废弃
 commentRouter.post('/api/updateLike',urlencodedParser, async (req, res) => {
     const value = await Comment.findOne({ _id: req.body.id})
     value.isLike = !value.isLike

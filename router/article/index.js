@@ -25,8 +25,8 @@ articleRouter.get('/api/articleList',jsonParser, async (req, res) => {
     }
     const backData = 'abstract author category comments id img isLike readNum thumbs _id title'
     var list = Article.find(query).select(backData)
-    const page = req.query.page/1 || 1
-    const rows =  req.query.rows/1 || 10
+    const page = req.query.page / 1 || 1
+    const rows =  req.query.rows / 1 || 10
     list.skip((page - 1) * rows);
     list.limit(rows);
     list.exec(async (err, rs)=> {
@@ -37,6 +37,7 @@ articleRouter.get('/api/articleList',jsonParser, async (req, res) => {
             res.send({
                 code: 200,
                 total: all.length,
+                totalPage: Math.ceil(all.length / rows),
                 data: rs
             })
         }

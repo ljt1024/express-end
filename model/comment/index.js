@@ -1,5 +1,8 @@
 // 建立评论表
 const CommentSchema = {
+    id: {
+        type: String
+    },
     // 评论内容
     commentContent: {
         type: String,
