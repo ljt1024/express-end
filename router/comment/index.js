@@ -34,8 +34,9 @@ commentRouter.get('/api/commentList',jsonParser, async (req, res) => {
 
 async function isMyThumb(commentId, userId) {
  // 根据评论id查询点赞表用户ids, 判断用户id是否存在ids中，存在表示已经点赞，否则未点赞
-    let thumbItem = await Thumb.find({commentId})
-    let userIds = thumbItem.userIds
+    let thumbItem = await Thumb.findOne({commentId})
+    let userIds = thumbItem?.userIds
+    console.log(thumbItem)
     return Array.isArray(userIds) && userIds.includes(userId)
 }
 

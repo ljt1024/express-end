@@ -25,9 +25,12 @@ thumbRouter.post('/api/article/thumb', urlencodedParser, async (req, res) => {
     const thumbItem = await Thumb.findOne({
         articleId: articleId
     })
-    // 从未点赞
+    // 从未点赞, 创建点赞，更新点赞数量
     if (!thumbItem) {
       await Thumb.create({articleId, userIds:[userId]})
+      await Article.updateOne({
+        id: articleId
+      }, { thumbs: 1 })
       return res.send({
           code: 200,
           msg: '已点赞!'
@@ -77,8 +80,12 @@ async function updateArticle(flag, articleId) {
         id: articleId
     })
     let thumbs = articleItem.thumbs
-    flag ? --thumbs : ++thumbs
-    console.log(thumbs);
+    // 小于0边界
+    if (flag) {
+        thumbs = Math.max(--thumbs, 0)
+    } else {
+        ++thumbs
+    }
     await Article.updateOne({
         id: articleId
     }, { thumbs })
@@ -86,6 +93,7 @@ async function updateArticle(flag, articleId) {
 
 // 评论点赞
 thumbRouter.post('/api/comment/thumb', urlencodedParser, async (req, res) => {
+    console.log('文章点赞')
     const { userId, commentId } = req.body
     if(!commentId) {
         return res.send({
@@ -102,9 +110,12 @@ thumbRouter.post('/api/comment/thumb', urlencodedParser, async (req, res) => {
     const thumbItem = await Thumb.findOne({
         commentId
     })
-    // 从未点赞
-    if(!thumbItem){
+    // 从未点赞, 创建点赞，更新点赞数量
+    if(!thumbItem) {
         await Thumb.create({commentId, userIds:[userId]})
+        await Comment.updateOne({
+            _id: commentId
+        }, { thumbs: 1 })
         return res.send({
             code: 200,
             msg: '已点赞!'
@@ -154,10 +165,14 @@ async function updateComment(flag, commentId) {
         _id: commentId
     })
     let thumbs = commentItem.thumbs
-    flag ? --thumbs : ++thumbs
+    if (flag) {
+        thumbs = Math.max(--thumbs, 0)
+    } else {
+        ++thumbs
+    }
     console.log(thumbs);
     await Comment.updateOne({
-        id: commentId
+        _id: commentId
     }, { thumbs })
 }
 
